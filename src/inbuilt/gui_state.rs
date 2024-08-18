@@ -11,7 +11,7 @@ use winit::window::Window;
 pub struct EguiRenderer {
     pub context: Context,
     state: State,
-    renderer: Renderer,
+    pub renderer: Renderer,
 }
 
 impl EguiRenderer {
@@ -39,7 +39,8 @@ impl EguiRenderer {
         let egui_state = State::new(egui_context.clone(), id, &window, None, None);
 
         // egui_state.set_pixels_per_point(window.scale_factor() as f32);
-        let egui_renderer = egui_wgpu::Renderer::new(
+
+        let egui_renderer = Renderer::new(
             device,
             output_color_format,
             output_depth_format,
@@ -67,7 +68,7 @@ impl EguiRenderer {
         screen_descriptor: ScreenDescriptor,
         run_ui: impl FnOnce(&Context),
     ) {
-        // self.state.set_pixels_per_point(window.scale_factor() as f32);
+
         let raw_input = self.state.take_egui_input(&window);
         let full_output = self.context.run(raw_input, |_| {
             run_ui(&self.context);

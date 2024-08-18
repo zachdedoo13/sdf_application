@@ -8,20 +8,25 @@ use crate::global_state::GlobalState;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
 
+
 #[cfg(target_arch = "wasm32")]
 #[wasm_bindgen]
 pub fn resize_to_canvas() {
    use wasm_bindgen::JsCast;
-   let window = web_sys::window().unwrap();
+   use web_sys::window;
+   let window = window().unwrap();
    let document = window.document().unwrap();
    let canvas = document.get_element_by_id("wgpu-canvas").unwrap();
    let canvas: web_sys::HtmlCanvasElement = canvas.dyn_into().unwrap();
 
-
-
    // Adjust the canvas size by dividing the width and height by the device pixel ratio
-   canvas.set_width((window.inner_width().unwrap().as_f64().unwrap()) as u32);
-   canvas.set_height((window.inner_height().unwrap().as_f64().unwrap()) as u32);
+   let w = window.inner_width().unwrap().as_f64().unwrap() as u32;
+   let h = window.inner_height().unwrap().as_f64().unwrap() as u32;
+
+   let _dpr = window.device_pixel_ratio();
+
+   canvas.set_width(if w > 0 { (w as f64) as u32 } else { 1 } );
+   canvas.set_height(if h > 0 { (h as f64) as u32 } else { 1 } );
 }
 
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(start))]
@@ -104,6 +109,10 @@ pub fn run() {
                         log::info!("physical_size: {nps:?}");
                         surface_configured = true;
                         state.resize(*nps);
+
+                        // log::info!("physical_size: {physical_size:?}");
+                        // surface_configured = true;
+                        // state.resize(*physical_size);
 
 
                         resize_to_canvas();

@@ -1,4 +1,3 @@
-use log::error;
 use wgpu::{Device, Features, Instance, Queue, Surface, SurfaceConfiguration};
 use winit::dpi::PhysicalSize;
 use winit::window::Window;
@@ -50,7 +49,6 @@ impl<'a> Setup<'a> {
                 } else {
                    wgpu::Limits::default()
                 },
-                memory_hints: Default::default(),
              },
              None,
           )

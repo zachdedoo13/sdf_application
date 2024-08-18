@@ -2,13 +2,11 @@ use winit::event::{ElementState, Event, KeyEvent, WindowEvent};
 use winit::event_loop::EventLoop;
 use winit::keyboard::{KeyCode, PhysicalKey};
 use winit::window::WindowBuilder;
-use crate::global_state;
 use crate::global_state::GlobalState;
 
 
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
-use winit::dpi::{PhysicalSize, Size};
 
 #[cfg(target_arch = "wasm32")]
 #[wasm_bindgen]
@@ -95,7 +93,6 @@ pub fn run() {
 
                      #[cfg(target_arch = "wasm32")]
                      {
-                        use wasm_bindgen::JsCast;
                         let window = web_sys::window().unwrap();
                         // Get the device pixel ratio
                         let dpr = window.device_pixel_ratio();
@@ -142,6 +139,7 @@ pub fn run() {
                   }
                   _ => {}
                }
+               state.egui_renderer.handle_input(&mut state.setup.window, &event);
             }
          }
          _ => {}

@@ -67,7 +67,6 @@ impl TestRenderPipeline {
          },
 
          multiview: None, // 5.
-         cache: None,
       });
 
 

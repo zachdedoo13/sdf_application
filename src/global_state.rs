@@ -82,7 +82,6 @@ impl<'a> GlobalState<'a> {
       }
 
 
-      // self.update_gui(&view, &mut encoder);
       self.ui_state.render_and_update(&self.setup, &mut self.egui_renderer, &mut self.egui_texture_package, &view, &mut encoder, &self.time_package);
 
       self.setup.queue.submit(iter::once(encoder.finish()));

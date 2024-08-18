@@ -146,7 +146,7 @@ impl UiState {
                            .allow_boxed_zoom(false)
                            .show(ui, |plot_ui| plot_ui.line(line));
 
-                 });
+                    });
                  });
           });
 

@@ -1,4 +1,4 @@
-use std::time::{Instant};
+use instant::Instant;
 
 
 const UPDATE_INTERVAL: f64 = 0.25;

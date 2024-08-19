@@ -23,43 +23,43 @@
 </head>
 
 <body id="wasm-example">
-    <script type="module">
-        function wait(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
+<script type="module">
+    function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
-        function set_size_stuff() {
-            wait(10).then(() => {
-                let canvas = document.getElementById("wgpu-canvas");
+    function set_size_stuff() {
+        wait(10).then(() => {
+            let canvas = document.getElementById("wgpu-canvas");
+            if (canvas) {
+                resize_to_canvas(canvas);
+                console.log("Canvas resized to window size:", canvas.width, canvas.height);
+            } else {
+                console.log("Canvas element not found");
+                set_size_stuff();
+            }
+
+            window.addEventListener('resize', () => {
                 if (canvas) {
                     resize_to_canvas(canvas);
                     console.log("Canvas resized to window size:", canvas.width, canvas.height);
-                } else {
-                    console.log("Canvas element not found");
-                    set_size_stuff();
                 }
-
-                window.addEventListener('resize', () => {
-                    if (canvas) {
-                        resize_to_canvas(canvas);
-                        console.log("Canvas resized to window size:", canvas.width, canvas.height);
-                    }
-                });
             });
-        }
-
-        import init, {resize_to_canvas} from "./pkg/sdf_application.js";
-        init({}).then(() => {
-            console.log("WASM Loaded");
-
-        }).catch(err => {
-            console.error("Error during WASM initialization:", err);
         });
+    }
 
-        set_size_stuff();
+    import init, {resize_to_canvas} from "./pkg/sdf_application.js";
+    init({}).then(() => {
+        console.log("WASM Loaded");
+
+    }).catch(err => {
+        console.error("Error during WASM initialization:", err);
+    });
+
+    set_size_stuff();
 
 
-    </script>
+</script>
 </body>
 
 </html>

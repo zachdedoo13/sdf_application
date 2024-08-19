@@ -7,7 +7,6 @@ use winit::window::Window;
 use crate::inbuilt::gui_state::EguiRenderer;
 use crate::inbuilt::setup::Setup;
 use crate::packages::test_render_pipeline::TestRenderPipeline;
-use crate::packages::time_package::TimePackage;
 use crate::ui::ui_state::UiState;
 use crate::utility::structs::EguiTexturePackage;
 
@@ -19,7 +18,7 @@ pub struct GlobalState<'a> {
 
    egui_texture_package: EguiTexturePackage,
 
-   time_package: TimePackage,
+   // time_package: TimePackage,
 
    test_render_pipeline: TestRenderPipeline,
 }
@@ -39,7 +38,7 @@ impl<'a> GlobalState<'a> {
 
       let ui_state = UiState::new();
 
-      let time_package = TimePackage::new();
+      // let time_package = TimePackage::new();
 
       Self {
          setup,
@@ -47,7 +46,7 @@ impl<'a> GlobalState<'a> {
          test_render_pipeline,
          egui_texture_package,
          ui_state,
-         time_package,
+         // time_package,
       }
    }
 
@@ -67,7 +66,7 @@ impl<'a> GlobalState<'a> {
 
    pub fn update(&mut self) {
       self.egui_texture_package.update(&self.setup, &mut self.egui_renderer);
-      self.time_package.update();
+      // self.time_package.update();
    }
 
    pub fn render(&mut self) -> Result<(), wgpu::SurfaceError> {
@@ -82,7 +81,7 @@ impl<'a> GlobalState<'a> {
       }
 
 
-      self.ui_state.render_and_update(&self.setup, &mut self.egui_renderer, &mut self.egui_texture_package, &view, &mut encoder, &self.time_package);
+      self.ui_state.render_and_update(&self.setup, &mut self.egui_renderer, &mut self.egui_texture_package, &view, &mut encoder);
 
       self.setup.queue.submit(iter::once(encoder.finish()));
       output.present();

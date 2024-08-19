@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="run_web" type="JavascriptDebugType" uri="http://localhost:63342/sdf_application/run_web.html" useBuiltInWebServerPort="true">
     <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build-web" run_configuration_type="ShConfigurationType" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build-web-dev" run_configuration_type="ShConfigurationType" />
     </method>
   </configuration>
 </component>

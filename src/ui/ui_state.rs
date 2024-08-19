@@ -7,8 +7,6 @@ use egui_wgpu::ScreenDescriptor;
 use wgpu::{CommandEncoder, Extent3d, TextureView};
 use crate::inbuilt::gui_state::EguiRenderer;
 use crate::inbuilt::setup::Setup;
-use crate::packages::time_package::TimePackage;
-use crate::utility::functions::round_to_x_decimals;
 use crate::utility::structs::EguiTexturePackage;
 
 pub struct UiState {
@@ -22,7 +20,7 @@ impl UiState {
       }
    }
 
-   fn ui(&mut self, context: &Context, egui_texture_package: &mut EguiTexturePackage, time_package: &TimePackage) {
+   fn ui(&mut self, context: &Context, egui_texture_package: &mut EguiTexturePackage) {
       catppuccin_egui::set_theme(&context, self.theme);
 
       CentralPanel::default().show(context, |ui| {
@@ -67,12 +65,12 @@ impl UiState {
          });
 
 
-         self.panels(ui, egui_texture_package, time_package);
+         self.panels(ui, egui_texture_package);
       });
 
    }
 
-   fn panels(&mut self, ui: &mut Ui, egui_texture_package: &mut EguiTexturePackage, time_package: &TimePackage) {
+   fn panels(&mut self, ui: &mut Ui, egui_texture_package: &mut EguiTexturePackage) {
       SidePanel::new(Side::Left, "left")
           .resizable(true)
           .show_inside(ui, |ui| {
@@ -90,7 +88,7 @@ impl UiState {
                  .resizable(true)
                  .show_inside(ui, |ui| {
 
-                    self.bottom_right(ui, time_package);
+                    self.bottom_right(ui);
                     // ui.allocate_space(ui.available_size());
                  });
 
@@ -109,11 +107,11 @@ impl UiState {
           });
    }
 
-   fn bottom_right(&mut self, ui: &mut Ui, time_package: &TimePackage) {
-      self.statistics(ui, time_package)
+   fn bottom_right(&mut self, ui: &mut Ui) {
+      self.statistics(ui)
    }
 
-   fn statistics(&mut self, ui: &mut Ui, time_package: &TimePackage) {
+   fn statistics(&mut self, ui: &mut Ui) {
       egui::ScrollArea::vertical()
           .show(ui, |ui| {
              egui::containers::CollapsingHeader::new("Fps")
@@ -122,29 +120,29 @@ impl UiState {
                        let mut w = ui.available_width();
 
                        ui.horizontal(|ui| {
-                          let tss = round_to_x_decimals(time_package.fps as f32, 1);
-                          ui.label(format!("Current fps: {}", if tss % 1.0 == 0.0 {format!("{tss}.0")} else {format!("{tss}")}) );
-
-                          let tss = round_to_x_decimals(time_package.start_time.elapsed().as_secs_f32(), 1);
-                          ui.label(format!("Time since start: {}", if tss % 1.0 == 0.0 {format!("{tss}.0")} else {format!("{tss}")}) );
+                          // let tss = round_to_x_decimals(time_package.fps as f32, 1);
+                          // ui.label(format!("Current fps: {}", if tss % 1.0 == 0.0 {format!("{tss}.0")} else {format!("{tss}")}) );
+                          //
+                          // let tss = round_to_x_decimals(time_package.start_time.elapsed().as_secs_f32(), 1);
+                          // ui.label(format!("Time since start: {}", if tss % 1.0 == 0.0 {format!("{tss}.0")} else {format!("{tss}")}) );
 
                           w = ui.min_size().x;
                        });
 
-                       let points: PlotPoints = time_package.past_fps.iter().enumerate().map(|(i, &val)| {
-                          [i as f64, val]
-                       }).collect();
-
-
-                       let line = Line::new(points);
-                       Plot::new("my_plot")
-                           .width(w)
-                           .view_aspect(2.0)
-                           .allow_drag(false)
-                           .allow_scroll(false)
-                           .allow_zoom(false)
-                           .allow_boxed_zoom(false)
-                           .show(ui, |plot_ui| plot_ui.line(line));
+                       // let points: PlotPoints = time_package.past_fps.iter().enumerate().map(|(i, &val)| {
+                       //    [i as f64, val]
+                       // }).collect();
+                       //
+                       //
+                       // let line = Line::new(points);
+                       // Plot::new("my_plot")
+                       //     .width(w)
+                       //     .view_aspect(2.0)
+                       //     .allow_drag(false)
+                       //     .allow_scroll(false)
+                       //     .allow_zoom(false)
+                       //     .allow_boxed_zoom(false)
+                       //     .show(ui, |plot_ui| plot_ui.line(line));
 
                     });
                  });
@@ -158,7 +156,7 @@ impl UiState {
     egui_renderer: &mut EguiRenderer,
     egui_texture_package: &mut EguiTexturePackage,
     view: &TextureView, encoder: &mut CommandEncoder,
-    time_package: &TimePackage,
+    // time_package: &TimePackage,
    ) {
       #[allow(unused_assignments)]
       let mut screen_descriptor = ScreenDescriptor { size_in_pixels: [1, 1], pixels_per_point: 0.0 };
@@ -180,7 +178,7 @@ impl UiState {
       }
 
       let run_ui = |context: &Context| {
-         self.ui(&context, egui_texture_package, time_package);
+         self.ui(&context, egui_texture_package);
       };
 
       egui_renderer.draw(

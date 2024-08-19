@@ -1,4 +1,4 @@
-use wgpu::{Device, Features, Instance, Queue, Surface, SurfaceConfiguration};
+use wgpu::{Device, Features, Instance, Queue, Surface, SurfaceConfiguration, TextureFormat};
 use winit::dpi::PhysicalSize;
 use winit::window::Window;
 
@@ -58,20 +58,11 @@ impl<'a> Setup<'a> {
 
       let surface_caps = surface.get_capabilities(&adapter);
 
-      let surface_format = surface_caps
-          .formats
-          .iter()
-          .copied()
-          .find(|f| f.is_srgb())
-          .unwrap_or(surface_caps.formats[0]);
-
-      // Query the maximum supported texture size
-      // let max_texture_size = adapter.limits().max_texture_dimension_2d;
-
+      let form = TextureFormat::Rgba8UnormSrgb;
 
       let config = SurfaceConfiguration {
          usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
-         format: surface_format,
+         format: form,
          width: size.width,
          height: size.height,
          present_mode: surface_caps.present_modes[0],
